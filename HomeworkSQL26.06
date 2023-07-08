@@ -1,0 +1,98 @@
+ 1 уровень сложности: 1.Создайте таблицу staff со следующими полями :
+id - целое число
+first_name - строка макс длиной 50
+surname - строка макс длиной 50
+salary - целое число
+
+2.Заполните таблицу несколькими строками используя insert (6 строк)
+
+
+3.Добавьте поле age - целое число со значением по умолчанию 0
+
+
+4.Переименуйте поле age в staff_age
+
+
+5.Проставьте значение в поле staff_age - из диапазона 20 - 50
+
+
+6.Создайте 2 преставления view, первое должно выбирать всех работников чей возраст меньше 35,
+второе - чей больше
+
+
+7.Скопируйте таблице staff в новую временную person , в которую должны копироваться только колонки
+относящиеся к личности - имя , фамилия,  возраст 
+
+
+8.Удалите временную таблицу.
+
+use hr;
+
+create table staff (
+id int,
+first_name varchar(50),
+surname varchar(50),
+salary int
+);
+
+select * from staff;
+insert into staff values (1, 'Steve', 'Rogers', 17000),
+                         (2, 'Peter', 'Parker', 15500),
+                         (3, 'Natasha', 'Romanoff', 17000),
+                         (4, 'Tony', 'Stark', 18000),
+                         (5, 'Pepper', 'Potts', 14300),
+                         (6, 'Stephen', 'Strange', 25000);
+
+alter table staff
+add age int default 0;
+
+alter table staff
+rename column age to staff_age;
+
+-- не поняла задание 5.Проставьте значение в поле staff_age - из диапазона 20 - 50
+-- может быть нужно было проставить ограничение на возраст и тогда перед этим удалить 
+-- нули из значений и поменять их на null? 
+-- alter table staff add constraint CHK_StaffAge check (staff_age>=20 and staff_age<=50);
+-- сделала вот так:
+set sql_safe_updates = 0;
+
+update staff
+set staff_age=50
+where id=1;
+
+update staff
+set staff_age=20
+where id=2;
+
+update staff
+set staff_age=28
+where id=3;
+
+update staff
+set staff_age=45
+where id=4;
+
+update staff
+set staff_age=37
+where id=5;
+
+update staff
+set staff_age=41
+where id=6;
+
+create view view_younger_employees as
+select *
+from staff
+where staff_age < 35;
+
+
+create view view_older_employees as
+select *
+from staff
+where staff_age >= 35;
+
+create table person as
+select first_name, surname, staff_age
+from staff;
+
+drop table person;
