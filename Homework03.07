@@ -8,7 +8,7 @@ create table goods (
   in_stock char(1) check (in_stock in ('Y', 'N'))
 );
 
-insert into goods (title, quantity, in_stock) values
+insert into goods  (title, quantity, in_stock) values
 ('Велосипед', 2, 'Y'),
 ('Скейт', 4, 'Y'),
 ('Самокат', 2, 'Y'),
